@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "greenhack-cars"
+version = "0.1.0"
+description = ""
+authors = ["Pavel Kral <pavel@pavelkral.eu>"]
+readme = "README.md"
+packages = [{include = "greenhack_cars"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^4.2.1"
+psycopg2 = "^2.9.6"
+pytz = "^2023.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.ruff]
+line-length = 120

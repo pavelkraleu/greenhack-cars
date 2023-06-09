@@ -1,0 +1,507 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+    {#    <div class="d-sm-flex align-items-center justify-content-between mb-4">#}
+    {#        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>#}
+    {#        <div class="row">#}
+    {#                 <a href="{% url 'cars_file_detail' pk=object.id %}"#}
+    {#           class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i#}
+    {#                class="fas fa-car text-white-50"></i> Cars</a>#}
+    {##}
+    {#            <a href="{% url 'cars_file_detail' pk=object.id %}"#}
+    {#           class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i#}
+    {#                class="fas fa-running text-white-50"></i> Run analysis</a>#}
+    {#        </div>#}
+    {#    </div>#}
+
+
+    <script>
+        Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+        Chart.defaults.global.defaultFontColor = '#858796';
+
+        let chart_options = {
+            maintainAspectRatio: false,
+            tooltips: {
+                backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: "#858796",
+                borderColor: '#dddfeb',
+                borderWidth: 1,
+                xPadding: 15,
+                yPadding: 15,
+                displayColors: false,
+                caretPadding: 10,
+            },
+            legend: {
+                display: false
+            },
+            cutoutPercentage: 80,
+        };
+    </script>
+
+    <div class="row">
+
+        <!-- Area Chart -->
+        <div class="col-lg-8">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Current fleet</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Number of cars
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ original_number_of_cars }}</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-car fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Total emisions
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ original_emissions_total }}
+                                                tCO2
+                                            </div>
+                                        </div>
+                                        {#                                        <div class="col-auto">#}
+                                        {#                                            <i class="fas fa-map fa-2x text-gray-300"></i>#}
+                                        {#                                        </div>#}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                All trips
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ original_distances_sum|intcomma }}
+                                                km
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+{#                        <div class="col-xl-3 col-md-6 mb-4">#}
+{#                            <div class="card border-left-success shadow h-100 py-2">#}
+{#                                <div class="card-body">#}
+{#                                    <div class="row no-gutters align-items-center">#}
+{#                                        <div class="col mr-2">#}
+{#                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">#}
+{#                                                Average trip#}
+{#                                            </div>#}
+{#                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ all_current_cars_avg_distance |intcomma }}#}
+{#                                                km#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                        <div class="col-auto">#}
+{#                                            <i class="fas fa-2x text-gray-300"></i>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+                    </div>
+{#                    <div class="row">#}
+{#                        <div class="col-xl-3 col-md-6 mb-4">#}
+{#                            <div class="card border-left-success shadow h-100 py-2">#}
+{#                                <div class="card-body">#}
+{#                                    <div class="row no-gutters align-items-center">#}
+{#                                        <div class="col mr-2">#}
+{#                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">#}
+{#                                                All trips#}
+{#                                            </div>#}
+{#                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ original_distances_sum |intcomma }}#}
+{#                                                km#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                        <div class="col-auto">#}
+{#                                            <i class="fas fa-2x text-gray-300"></i>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+                </div>
+            </div>
+        </div>
+
+        <!-- Pie Chart -->
+        <div class="col-lg-4">
+            <div class="card shadow mb-4">
+                <div
+                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Cars in fleet</h6>
+                    <div class="dropdown no-arrow">
+                    </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="chart-pie pt-4 pb-2">
+                        <canvas id="pie_chart_current"></canvas>
+                    </div>
+                    <div class="mt-4 text-center small">
+                        {% for type in original_car_type_keys %}
+                            <span class="mr-2">
+                            <i class="fas fa-circle"></i> {{ type }}
+                        </span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Pie Chart Example
+        var ctx = document.getElementById("pie_chart_current");
+        var myPieChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: {{ original_car_type_keys | safe }},
+                datasets: [{
+                    data: {{ original_car_type_values | safe }},
+                    backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+                    hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+                    hoverBorderColor: "rgba(234, 236, 244, 1)",
+                }],
+            },
+            options: chart_options
+        });
+    </script>
+
+    {#    <header class="container-fluid">#}
+    {#        <h2>Proposed fleet state</h2>#}
+    {#    </header>#}
+
+    <div class="row">
+
+        <!-- Area Chart -->
+        <div class="col-lg-8">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Proposed fleet</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Number of cars
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ proposed_number_of_cars }}</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-car fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Total emisions
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ proposed_emissions_total }}
+                                                tCO2
+                                            </div>
+                                        </div>
+                                        {#                                        <div class="col-auto">#}
+                                        {#                                            <i class="fas fa-map fa-2x text-gray-300"></i>#}
+                                        {#                                        </div>#}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Longest trip
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ all_proposed_cars_max_distance|intcomma }}
+                                                km
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Average trip
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ all_proposed_cars_avg_distance |intcomma }}
+                                                km
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                All trips
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ all_proposed_cars_sum_distance |intcomma }}
+                                                km
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-danger shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                                Emissions reduction
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ percentage_decrease_emissions }}
+                                                %
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-danger shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                                Cost to refresh
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ cost_refresh_fleet|intcomma }}
+                                                Kc
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {#                    <div class="row">#}
+{#                                            <div class="col-xl-3 col-md-6 mb-4">#}
+{#                                                <div class="card border-left-primary shadow h-100 py-2">#}
+{#                                                    <div class="card-body">#}
+{#                                                        <div class="row no-gutters align-items-center">#}
+{#                                                            <div class="col mr-2">#}
+{#                                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">#}
+{#                                                                    Number of cars#}
+{#                                                                </div>#}
+{#                                                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ all_proposed_cars_num }}</div>#}
+{#                                                            </div>#}
+{#                                                            <div class="col-auto">#}
+{#                                                                <i class="fas fa-car fa-2x text-gray-300"></i>#}
+{#                                                            </div>#}
+{#                                                        </div>#}
+{#                                                    </div>#}
+{#                                                </div>#}
+{#                                            </div>#}
+                    {##}
+                    {#                        <!-- Earnings (Monthly) Card Example -->#}
+                    {#                        <div class="col-xl-3 col-md-6 mb-4">#}
+                    {#                            <div class="card border-left-success shadow h-100 py-2">#}
+                    {#                                <div class="card-body">#}
+                    {#                                    <div class="row no-gutters align-items-center">#}
+                    {#                                        <div class="col mr-2">#}
+                    {#                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">#}
+                    {#                                                Total emissions#}
+                    {#                                            </div>#}
+                    {#                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ all_proposed_cars_emissions |intcomma }} tCO2</div>#}
+                    {#                                        </div>#}
+                    {#                                        <div class="col-auto">#}
+                    {#                                            <i class="fas fa-map fa-2x text-gray-300"></i>#}
+                    {#                                        </div>#}
+                    {#                                    </div>#}
+                    {#                                </div>#}
+                    {#                            </div>#}
+                    {#                        </div>#}
+                    {##}
+                    {#                        <div class="col-xl-3 col-md-6 mb-4">#}
+                    {#                            <div class="card border-left-success shadow h-100 py-2">#}
+                    {#                                <div class="card-body">#}
+                    {#                                    <div class="row no-gutters align-items-center">#}
+                    {#                                        <div class="col mr-2">#}
+                    {#                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">#}
+                    {#                                                Longest trip#}
+                    {#                                            </div>#}
+                    {#                                            <div class="h5 mb-0 font-weight-bold text-gray-800">XXX km</div>#}
+                    {#                                        </div>#}
+                    {#                                        <div class="col-auto">#}
+                    {#                                            <i class="fas fa-map fa-2x text-gray-300"></i>#}
+                    {#                                        </div>#}
+                    {#                                    </div>#}
+                    {#                                </div>#}
+                    {#                            </div>#}
+                    {#                        </div>#}
+                    {##}
+                    {#                        <div class="col-xl-3 col-md-6 mb-4">#}
+                    {#                            <div class="card border-left-success shadow h-100 py-2">#}
+                    {#                                <div class="card-body">#}
+                    {#                                    <div class="row no-gutters align-items-center">#}
+                    {#                                        <div class="col mr-2">#}
+                    {#                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">#}
+                    {#                                                Average trip#}
+                    {#                                            </div>#}
+                    {#                                            <div class="h5 mb-0 font-weight-bold text-gray-800">XXX km</div>#}
+                    {#                                        </div>#}
+                    {#                                        <div class="col-auto">#}
+                    {#                                            <i class="fas fa-map fa-2x text-gray-300"></i>#}
+                    {#                                        </div>#}
+                    {#                                    </div>#}
+                    {#                                </div>#}
+                    {#                            </div>#}
+                    {#                        </div>#}
+                    {#                    </div>#}
+                </div>
+            </div>
+        </div>
+
+        <!-- Pie Chart -->
+        <div class="col-lg-4">
+            <div class="card shadow mb-4">
+                <div
+                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Cars in fleet</h6>
+                    <div class="dropdown no-arrow">
+                    </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="chart-pie pt-4 pb-2">
+                        <canvas id="pie_chart_proposed"></canvas>
+                    </div>
+                    <div class="mt-4 text-center small">
+                        {% for type in proposed_car_type_keys %}
+                            <span class="mr-2">
+                            <i class="fas fa-circle"></i> {{ type }}
+                        </span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Pie Chart Example
+        var ctx = document.getElementById("pie_chart_proposed");
+        var myPieChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: {{ proposed_car_type_keys | safe }},
+                datasets: [{
+                    data: {{ proposed_car_type_values | safe }},
+                    backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+                    hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+                    hoverBorderColor: "rgba(234, 236, 244, 1)",
+                }],
+            },
+            options: chart_options
+        });
+    </script>
+
+    <!-- Pie Chart -->
+    {#        <div class="col-xl-4 col-lg-5">#}
+    {#            <div class="card shadow mb-4">#}
+    {#                <!-- Card Header - Dropdown -->#}
+    {#                <div#}
+    {#                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">#}
+    {#                    <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>#}
+    {##}
+    {#                </div>#}
+    {#                <!-- Card Body -->#}
+    {#                <div class="card-body">#}
+    {#                    <div class="chart-pie pt-4 pb-2">#}
+    {#                        <canvas id="myPieChart"></canvas>#}
+    {#                    </div>#}
+    {#                    <div class="mt-4 text-center small">#}
+    {#                                        <span class="mr-2">#}
+    {#                                            <i class="fas fa-circle text-primary"></i> Direct#}
+    {#                                        </span>#}
+    {#                        <span class="mr-2">#}
+    {#                                            <i class="fas fa-circle text-success"></i> Social#}
+    {#                                        </span>#}
+    {#                        <span class="mr-2">#}
+    {#                                            <i class="fas fa-circle text-info"></i> Referral#}
+    {#                                        </span>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#</div>#}
+
+{% endblock %}
