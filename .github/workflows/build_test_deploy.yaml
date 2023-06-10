@@ -1,0 +1,26 @@
+---
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  setup-build-deploy:
+    runs-on: "ubuntu-latest"
+
+    permissions:
+      contents: "read"
+      id-token: "write"
+
+    steps:
+      - name: "Git Checkout"
+        uses: "actions/checkout@v3"
+
+      # Configure Workload Identity Federation via a credentials file.
+      - name: "Authenticate to Google Cloud"
+        uses: "google-github-actions/auth@v1"
+        with:
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.SERVICE_ACCOUNT }}
+          token_format: "access_token"
