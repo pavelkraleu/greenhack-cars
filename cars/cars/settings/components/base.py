@@ -24,7 +24,7 @@ SECRET_KEY = "django-insecure-4ugdor5qsxau$@*$jpn!e0u%ozr%gimujubr!k++z*h6#($5jw
 
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["greencars-main-yxkaf5eqzq-ew.a.run.app", "zero.pavelkral.eu"]
 
 
 # Application definition
