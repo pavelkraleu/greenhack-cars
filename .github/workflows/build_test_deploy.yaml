@@ -24,3 +24,15 @@ jobs:
           workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.SERVICE_ACCOUNT }}
           token_format: "access_token"
+
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v1"
+
+      - name: "Docker auth"
+        run: |-
+          gcloud auth configure-docker ${{ vars.GCP_LOCATION }}-docker.pkg.dev
+
+      - name: "Build and push container"
+        run: |-
+          docker build -t "${{ vars.GCP_LOCATION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ vars.APP_NAME }}/${{ vars.APP_NAME }}:${{ github.ref_name }}" .
+          docker push "${{ vars.GCP_LOCATION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ vars.APP_NAME }}/${{ vars.APP_NAME }}:${{ github.ref_name }}"
