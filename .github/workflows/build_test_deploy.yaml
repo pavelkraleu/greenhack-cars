@@ -46,8 +46,8 @@ jobs:
           flags: "--set-cloudsql-instances=${{ secrets.GCP_CLOUD_SQL_HOST }} --cpu-boost --memory=1Gi --cpu=1000m --timeout=120"
           env_vars: |
             DJANGO_SETTINGS_MODULE=cars.settings.gcp
-            GCP_CLOUD_SQL_NAME=wtl-${{ github.ref_name }}
-            GCP_CLOUD_SQL_USER=wtl-${{ github.ref_name }}
+            GCP_CLOUD_SQL_NAME=greencars
+            GCP_CLOUD_SQL_USER=greencars
             GCP_CLOUD_SQL_PASS=${{ secrets.GCP_CLOUD_SQL_PASS }}
             GCP_CLOUD_SQL_HOST=/cloudsql/${{ secrets.GCP_CLOUD_SQL_HOST }}
             GCP_BUCKET_STATIC=greencars-static-${{ github.ref_name }}
