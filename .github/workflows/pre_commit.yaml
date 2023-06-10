@@ -1,0 +1,20 @@
+---
+
+on: "push"
+
+jobs:
+  run_pre_commit:
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - uses: "actions/checkout@v3"
+
+      - name: "Set up Python 3.11"
+        uses: "actions/setup-python@v4"
+        with:
+          python-version: "3.11"
+
+      - name: "Run pre-commit"
+        run: |
+          pip install pre-commit
+          pre-commit run --all-files
