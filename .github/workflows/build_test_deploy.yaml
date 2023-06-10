@@ -36,3 +36,18 @@ jobs:
         run: |-
           docker build -t "${{ vars.GCP_LOCATION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ vars.APP_NAME }}/${{ vars.APP_NAME }}:${{ github.ref_name }}" .
           docker push "${{ vars.GCP_LOCATION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ vars.APP_NAME }}/${{ vars.APP_NAME }}:${{ github.ref_name }}"
+
+      - name: "Deploy Cloud Run"
+        uses: "google-github-actions/deploy-cloudrun@v1"
+        with:
+          service: "greencars-${{ github.ref_name }}"
+          image: "${{ vars.GCP_LOCATION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ vars.APP_NAME }}/${{ vars.APP_NAME }}:${{ github.ref_name }}"
+          region: "${{ vars.GCP_LOCATION }}"
+          flags: "--set-cloudsql-instances=${{ secrets.GCP_CLOUD_SQL_HOST }} --cpu-boost --memory=1Gi --cpu=1000m --timeout=120"
+          env_vars: |
+            DJANGO_SETTINGS_MODULE=cars.settings.gcp
+            GCP_CLOUD_SQL_NAME=wtl-${{ github.ref_name }}
+            GCP_CLOUD_SQL_USER=wtl-${{ github.ref_name }}
+            GCP_CLOUD_SQL_PASS=${{ secrets.GCP_CLOUD_SQL_PASS }}
+            GCP_CLOUD_SQL_HOST=/cloudsql/${{ secrets.GCP_CLOUD_SQL_HOST }}
+            GCP_BUCKET_STATIC=greencars-static-${{ github.ref_name }}
