@@ -24,8 +24,16 @@ SECRET_KEY = "django-insecure-4ugdor5qsxau$@*$jpn!e0u%ozr%gimujubr!k++z*h6#($5jw
 
 DEBUG = False
 
-ALLOWED_HOSTS = ["greencars-main-yxkaf5eqzq-ew.a.run.app", "zero.pavelkral.eu"]
+ALLOWED_HOSTS = [
+    "greencars-main-yxkaf5eqzq-ew.a.run.app",
+    "zero.pavelkral.eu",
+    "127.0.0.1",
+]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://greencars-main-yxkaf5eqzq-ew.a.run.app",
+    "https://zero.pavelkral.eu",
+]
 
 # Application definition
 
@@ -38,6 +46,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.gis",
     "django.contrib.humanize",
+    "crispy_forms",
+    "crispy_bootstrap4",
     "web",
 ]
 
@@ -111,3 +121,7 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
+
+CRISPY_TEMPLATE_PACK = "bootstrap4"
