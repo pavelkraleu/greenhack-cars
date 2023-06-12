@@ -43,7 +43,7 @@ jobs:
           service: "greencars-${{ github.ref_name }}"
           image: "${{ vars.GCP_LOCATION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ vars.APP_NAME }}/${{ vars.APP_NAME }}:${{ github.ref_name }}"
           region: "${{ vars.GCP_LOCATION }}"
-          flags: "--set-cloudsql-instances=${{ secrets.GCP_CLOUD_SQL_HOST }} --cpu-boost --memory=1Gi --cpu=1000m --timeout=120"
+          flags: "--set-cloudsql-instances=${{ secrets.GCP_CLOUD_SQL_HOST }} --cpu-boost --memory=1Gi --cpu=1000m --timeout=120 --min-instances=1 --max-instances=1"
           env_vars: |
             DJANGO_SETTINGS_MODULE=cars.settings.gcp
             GCP_CLOUD_SQL_NAME=greencars
