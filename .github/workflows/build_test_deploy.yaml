@@ -37,6 +37,19 @@ jobs:
           docker build -t "${{ vars.GCP_LOCATION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ vars.APP_NAME }}/${{ vars.APP_NAME }}:${{ github.ref_name }}" .
           docker push "${{ vars.GCP_LOCATION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ vars.APP_NAME }}/${{ vars.APP_NAME }}:${{ github.ref_name }}"
 
+      - name: "Run migrations"
+        run: >
+            gcloud run jobs deploy greencars-migration-${{ github.ref_name }}
+            --image "${{ vars.GCP_LOCATION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ vars.APP_NAME }}/${{ vars.APP_NAME }}:${{ github.ref_name }}"
+            --set-cloudsql-instances ${{ secrets.GCP_CLOUD_SQL_HOST }} --region ${{ vars.GCP_LOCATION }}
+            --set-env-vars "DJANGO_SETTINGS_MODULE=cars.settings.gcp"
+            --set-env-vars "GCP_CLOUD_SQL_NAME=greencars"
+            --set-env-vars "GCP_CLOUD_SQL_USER=greencars"
+            --set-env-vars "GCP_CLOUD_SQL_PASS=${{ secrets.GCP_CLOUD_SQL_PASS }}"
+            --set-env-vars "GCP_CLOUD_SQL_HOST=/cloudsql/${{ secrets.GCP_CLOUD_SQL_HOST }}"
+            --set-env-vars "GCP_BUCKET_STATIC=greencars-static-${{ github.ref_name }}"
+            --command "/app/migrate.sh" --execute-now --wait
+
       - name: "Deploy Cloud Run"
         uses: "google-github-actions/deploy-cloudrun@v1"
         with:
