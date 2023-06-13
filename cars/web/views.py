@@ -3,7 +3,7 @@ from collections import defaultdict
 from datetime import datetime, timezone
 
 from django.contrib.gis.db.models.functions import Distance
-from django.db.models import F, Sum, QuerySet, Count, Prefetch
+from django.db.models import F, Sum, QuerySet, Count, Prefetch, Max
 from django.views.generic import (
     DetailView,
     ListView,
@@ -18,6 +18,11 @@ from web.models import Drive, CarDrive, Analysis, CarTypes, EngineTypes
 qs_cars_with_details = (
     CarDrive.objects.annotate(
         distance_total=Sum(
+            Distance(F("drives__location_start"), F("drives__location_stop"))
+        )
+    )
+    .annotate(
+        distance_max=Max(
             Distance(F("drives__location_start"), F("drives__location_stop"))
         )
     )
@@ -206,14 +211,11 @@ def get_proposed_car(current_car: CarDrive, analysis: Analysis) -> CarTypes:
         return current_car.type
 
     car_age = (datetime.now(timezone.utc) - current_car.year_made).days // 365
-    if car_age <= analysis.replace_min_age_years:
+    if car_age < analysis.replace_min_age_years:
         print(f"Car {current_car} too new")
         return current_car.type
 
-    max_distance = 0
-    for drive in current_car.drives.all():
-        if max_distance < drive.distance.km:
-            max_distance = drive.distance.km
+    max_distance = current_car.distance_max.km
 
     electro = (
         CarTypes.objects.filter(
@@ -223,10 +225,20 @@ def get_proposed_car(current_car: CarDrive, analysis: Analysis) -> CarTypes:
         .first()
     )
     if electro:
+        print(f"Found suitable electro {electro}")
         return electro
 
-    default_car = CarTypes.objects.get(name="Octavia 1.5 TSI manual")
-    return default_car
+    non_electric_car_with_lower_emissions = (
+        CarTypes.objects.exclude(engine_type=EngineTypes.ELECTRIC)
+        .filter(emissions_fuel_per_km__lt=current_car.type.emissions_fuel_per_km)
+        .order_by("cost_new")
+        .first()
+    )
+    if non_electric_car_with_lower_emissions:
+        print(f"Found suitable non-electro {electro}")
+        return non_electric_car_with_lower_emissions
+
+    return current_car.type
 
 
 class AnalysisCreate(CreateView):
@@ -241,6 +253,11 @@ class AnalysisCreate(CreateView):
         for car in (
             CarDrive.objects.annotate(
                 distance_sum=Sum(
+                    Distance(F("drives__location_start"), F("drives__location_stop"))
+                )
+            )
+            .annotate(
+                distance_max=Max(
                     Distance(F("drives__location_start"), F("drives__location_stop"))
                 )
             )

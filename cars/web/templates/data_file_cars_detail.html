@@ -15,7 +15,8 @@
                         <th>Original tCO2</th>
                         <th>Proposed Car</th>
                         <th>Proposed tCO2</th>
-                        <th>Total Km driven</th>
+                        <th>Total distance</th>
+                        <th>Longest trip</th>
                         <th>Year made</th>
                         <th>Frozen</th>
                     </tr>
@@ -27,7 +28,8 @@
                         <th>Original tCO2</th>
                         <th>Proposed Car</th>
                         <th>Proposed tCO2</th>
-                        <th>Total Km driven</th>
+                        <th>Total distance</th>
+                        <th>Longest trip</th>
                         <th>Year made</th>
                         <th>Frozen</th>
                     </tfoot>
@@ -47,9 +49,8 @@
                             </td>
                             <td style="background-color: #b3d2fc">{{ car.proposed_emissions_total_t|floatformat:2 }}</td>
                             <td>{{ car.distance_total.km |floatformat:0 }} km</td>
+                            <td>{{ car.distance_max.km |floatformat:0 }} km</td>
                             <td>{{ car.year_made.year }}</td>
-
-
                             <td>{% if car.frozen %}🔒{% endif %}</td>
                         </tr>
                     {% endfor %}

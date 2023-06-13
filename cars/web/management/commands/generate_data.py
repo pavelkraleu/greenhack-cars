@@ -84,7 +84,7 @@ class Command(BaseCommand):
         min_distance_km = options["min_distance_km"]
         max_distance_km = options["max_distance_km"]
 
-        default_car = CarTypes.objects.get(name="Octavia 2.0 TDI manual")
+        default_car = CarTypes.objects.get(name="Kodiaq 2.0 TDI automat")
 
         for _ in range(num_cars):
             car_years_old = round(random.normalvariate(5, 3))
