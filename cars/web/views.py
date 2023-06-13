@@ -12,8 +12,29 @@ from django.views.generic import (
     TemplateView,
 )
 
-from web.forms import CarDriveForm
+from web.forms import CarDriveForm, AnalysisForm
 from web.models import Drive, CarDrive, Analysis, CarTypes, EngineTypes
+
+qs_cars_with_details = (
+    CarDrive.objects.annotate(
+        distance_total=Sum(
+            Distance(F("drives__location_start"), F("drives__location_stop"))
+        )
+    )
+    .annotate(distance_avg=F("distance_total") / 1000 / Count("drives"))
+    .annotate(
+        original_emissions_total_t=(
+            (F("distance_total") / 1000) * F("type__emissions_fuel_per_km")
+        )
+        / 1000000
+    )
+    .annotate(
+        proposed_emissions_total_t=(
+            (F("distance_total") / 1000) * F("proposed_type__emissions_fuel_per_km")
+        )
+        / 1000000
+    )
+)
 
 
 class DriveDetail(DetailView):
@@ -28,21 +49,6 @@ class DataFileDetail(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        qs_cars_with_details = (
-            CarDrive.objects.annotate(
-                distance_total=Sum(
-                    Distance(F("drives__location_start"), F("drives__location_stop"))
-                )
-            )
-            .annotate(distance_avg=F("distance_total") / 1000 / Count("drives"))
-            .annotate(
-                emissions_total_t=(
-                    (F("distance_total") / 1000) * F("type__emissions_fuel_per_km")
-                )
-                / 1000000
-            )
-        )
-
         context["original_number_of_cars"] = CarDrive.objects.count()
         context["proposed_number_of_cars"] = CarDrive.objects.filter(
             proposed_type__isnull=False
@@ -52,12 +58,27 @@ class DataFileDetail(TemplateView):
             return round(sum(qs.values_list(column_name, flat=True)))
 
         context["original_emissions_total"] = sum_column(
-            qs_cars_with_details, "emissions_total_t"
+            qs_cars_with_details, "original_emissions_total_t"
         )
         context["proposed_emissions_total"] = sum_column(
             qs_cars_with_details.filter(proposed_type__isnull=False),
-            "emissions_total_t",
+            "proposed_emissions_total_t",
         )
+
+        context["percentage_decrease_emissions"] = round(
+            (
+                (
+                    context["original_emissions_total"]
+                    - context["proposed_emissions_total"]
+                )
+                / context["original_emissions_total"]
+            )
+            * 100
+        )
+
+        context["total_sum_refresh"] = CarDrive.objects.filter(
+            proposed_type__isnull=False
+        ).aggregate(Sum("proposed_type__cost_new"))["proposed_type__cost_new__sum"]
 
         context["original_distances_sum"] = round(
             sum(
@@ -160,11 +181,7 @@ class CarDriveFileList(ListView):
     #     ).all()
 
     def get_queryset(self):
-        return CarDrive.objects.annotate(
-            distance_sum=Sum(
-                Distance(F("drives__location_start"), F("drives__location_stop"))
-            )
-        ).order_by("-distance_sum")
+        return qs_cars_with_details.order_by("-original_emissions_total_t")
 
 
 class CarDriveEdit(UpdateView):
@@ -213,9 +230,8 @@ def get_proposed_car(current_car: CarDrive, analysis: Analysis) -> CarTypes:
 
 
 class AnalysisCreate(CreateView):
-    model = Analysis
+    form_class = AnalysisForm
     template_name = "analysis_create.html"
-    fields = ["replace_min_age_years", "replace_min_odometer_km"]
     success_url = "/"
 
     def form_valid(self, form):
