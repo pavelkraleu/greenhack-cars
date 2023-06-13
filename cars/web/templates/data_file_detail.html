@@ -77,7 +77,7 @@
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 Total emisions
                                             </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ original_emissions_total }}
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ original_emissions_total|floatformat:2 }}
                                                 tCO2
                                             </div>
                                         </div>
@@ -241,7 +241,7 @@
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 Total emisions
                                             </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ proposed_emissions_total }}
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ proposed_emissions_total|floatformat:2 }}
                                                 tCO2
                                             </div>
                                         </div>

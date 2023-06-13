@@ -55,7 +55,7 @@ class DataFileDetail(TemplateView):
         ).count()
 
         def sum_column(qs: QuerySet, column_name: str):
-            return round(sum(qs.values_list(column_name, flat=True)))
+            return sum(qs.values_list(column_name, flat=True))
 
         context["original_emissions_total"] = sum_column(
             qs_cars_with_details, "original_emissions_total_t"
@@ -219,7 +219,7 @@ def get_proposed_car(current_car: CarDrive, analysis: Analysis) -> CarTypes:
         CarTypes.objects.filter(
             engine_type=EngineTypes.ELECTRIC, max_range_km__gt=max_distance
         )
-        .order_by("max_range_km")
+        .order_by("cost_new")
         .first()
     )
     if electro:
