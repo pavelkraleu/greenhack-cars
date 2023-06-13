@@ -11,31 +11,45 @@
                     <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Current Car</th>
+                        <th>Original Car</th>
+                        <th>Original tCO2</th>
                         <th>Proposed Car</th>
-                        <th>Km</th>
+                        <th>Proposed tCO2</th>
+                        <th>Total Km driven</th>
                         <th>Year made</th>
-                        <th>Locked</th>
+                        <th>Frozen</th>
                     </tr>
                     </thead>
                     <tfoot>
                     <tr>
                         <th>ID</th>
-                        <th>Current Car</th>
+                        <th>Original Car</th>
+                        <th>Original tCO2</th>
                         <th>Proposed Car</th>
-                        <th>Km</th>
+                        <th>Proposed tCO2</th>
+                        <th>Total Km driven</th>
                         <th>Year made</th>
-                        <th>Locked</th>
-                    </tr>
+                        <th>Frozen</th>
                     </tfoot>
                     <tbody>
                     {% for car in object_list %}
                         <tr>
                             <td><a href="{% url 'cars_file_update' pk=car.id %}">{{ car.license_plate }}</a></td>
-                            <td>{{ car.type.manufacturer }} {{ car.type.name }} {{ car.type.engine_type }}</td>
-                            <td>{{ car.proposed_type.manufacturer }} {{ car.proposed_type.name }} {{ car.proposed_type.engine_type }}</td>
-                            <td>{{ car.distance_sum.km |floatformat:0 }} km</td>
+                            <td style="background-color: #e7ffc7">{{ car.type.name }} {{ car.type.engine_type }}</td>
+                            <td style="background-color: #d5ff9e">{{ car.original_emissions_total_t|floatformat:2 }}</td>
+                            <td style="background-color: #cfe1fa">
+                                {{ car.proposed_type.name }} {{ car.proposed_type.engine_type }}
+                                {% if car.proposed_type.engine_type ==  "ELECTRIC"%} ♻️ {% endif %}
+                                {% if car.proposed_type.engine_type ==  "DIESEL"%} 🔥 {% endif %}
+                                {% if car.proposed_type.engine_type ==  "GAS"%} 🕯️ {% endif %}
+                                {% if car.proposed_type.engine_type ==  "HYBRID"%} ☯️️ {% endif %}
+                                {% if not car.proposed_type%} Removed ❌ {% endif %}
+                            </td>
+                            <td style="background-color: #b3d2fc">{{ car.proposed_emissions_total_t|floatformat:2 }}</td>
+                            <td>{{ car.distance_total.km |floatformat:0 }} km</td>
                             <td>{{ car.year_made.year }}</td>
+
+
                             <td>{% if car.frozen %}🔒{% endif %}</td>
                         </tr>
                     {% endfor %}

@@ -259,9 +259,9 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                Longest trip
+                                                All trips
                                             </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ all_proposed_cars_max_distance|intcomma }}
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ proposed_distances_sum |intcomma }}
                                                 km
                                             </div>
                                         </div>
@@ -273,46 +273,46 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-success shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                Average trip
-                                            </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ all_proposed_cars_avg_distance |intcomma }}
-                                                km
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+{#                        <div class="col-xl-3 col-md-6 mb-4">#}
+{#                            <div class="card border-left-success shadow h-100 py-2">#}
+{#                                <div class="card-body">#}
+{#                                    <div class="row no-gutters align-items-center">#}
+{#                                        <div class="col mr-2">#}
+{#                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">#}
+{#                                                Average trip#}
+{#                                            </div>#}
+{#                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ all_proposed_cars_avg_distance |intcomma }}#}
+{#                                                km#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                        <div class="col-auto">#}
+{#                                            <i class="fas fa-2x text-gray-300"></i>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
                     </div>
                     <div class="row">
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-success shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                All trips
-                                            </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ all_proposed_cars_sum_distance |intcomma }}
-                                                km
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+{#                        <div class="col-xl-3 col-md-6 mb-4">#}
+{#                            <div class="card border-left-success shadow h-100 py-2">#}
+{#                                <div class="card-body">#}
+{#                                    <div class="row no-gutters align-items-center">#}
+{#                                        <div class="col mr-2">#}
+{#                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">#}
+{#                                                All trips#}
+{#                                            </div>#}
+{#                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ all_proposed_cars_sum_distance |intcomma }}#}
+{#                                                km#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                        <div class="col-auto">#}
+{#                                            <i class="fas fa-2x text-gray-300"></i>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-danger shadow h-100 py-2">
                                 <div class="card-body">
@@ -340,7 +340,7 @@
                                             <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
                                                 Cost to refresh
                                             </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ cost_refresh_fleet|intcomma }}
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_sum_refresh|intcomma }}
                                                 Kc
                                             </div>
                                         </div>
