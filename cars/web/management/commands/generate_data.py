@@ -29,8 +29,8 @@ from web.models import CarTypes, Drive, CarDrive
 
 
 def generate_random_point():
-    min_lon, min_lat = 13.468407, 50.548324
-    max_lon, max_lat = 15.800661, 49.423708
+    min_lon, min_lat = 12.765721, 51.10789
+    max_lon, max_lat = 17.765611, 45.758834
 
     lon = random.uniform(min_lon, max_lon)
     lat = random.uniform(min_lat, max_lat)
@@ -56,6 +56,20 @@ class Command(BaseCommand):
             required=True,
             type=int,
         )
+        parser.add_argument(
+            "--min_distance_km",
+            dest="min_distance_km",
+            help="Minimum distance of car trip",
+            required=True,
+            type=int,
+        )
+        parser.add_argument(
+            "--max_distance_km",
+            dest="max_distance_km",
+            help="Maximum distance of car trip",
+            required=True,
+            type=int,
+        )
         # parser.add_argument(
         #     "--mean_drive_distance",
         #     dest="mean_drive_distance",
@@ -67,9 +81,10 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         num_cars = options["num_cars"]
         num_drives = options["num_drives"]
-        # mean_drive_distance = options["mean_drive_distance"]
+        min_distance_km = options["min_distance_km"]
+        max_distance_km = options["max_distance_km"]
 
-        default_car = CarTypes.objects.get(name="Octavia 2.0 TDI automat")
+        default_car = CarTypes.objects.get(name="Octavia 2.0 TDI manual")
 
         for _ in range(num_cars):
             car_years_old = round(random.normalvariate(5, 3))
@@ -96,14 +111,23 @@ class Command(BaseCommand):
 
                 # generate_random_point()
 
-                drive = Drive.objects.create(
+                points_distance_km = 0
+
+                while (
+                    points_distance_km < min_distance_km
+                    or points_distance_km > max_distance_km
+                ):
+                    # TODO
+                    point_start = Point(*generate_random_point())
+                    point_stop = Point(*generate_random_point())
+
+                    points_distance_km = point_start.distance(point_stop) * 100
+
+                print(points_distance_km)
+                Drive.objects.create(
                     car=car_drive,
-                    # distance_km=trip_distance_km,
-                    # odometer_end_km=odometer_end_km,
-                    # time_start=time_start,
-                    # time_stop=time_stop,
-                    location_start=Point(*generate_random_point()),
-                    location_stop=Point(*generate_random_point()),
+                    location_start=point_start,
+                    location_stop=point_stop,
                 )
 
-                print(drive)
+                # print(drive)
