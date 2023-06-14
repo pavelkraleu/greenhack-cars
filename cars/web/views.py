@@ -176,14 +176,13 @@ class DataFileDetail(TemplateView):
         return context
 
 
-class CarDriveFileList(ListView):
-    # model = CarDrive
-    template_name = "data_file_cars_detail.html"
+class CarTypeList(ListView):
+    model = CarTypes
+    template_name = "car_type_list.html"
 
-    # def get_queryset(self):
-    #     return CarDrive.objects.annotate(
-    #         distance=Distance('location_start', 'location_stop')
-    #     ).all()
+
+class CarDriveFileList(ListView):
+    template_name = "data_file_cars_detail.html"
 
     def get_queryset(self):
         return qs_cars_with_details.order_by("-original_emissions_total_t")

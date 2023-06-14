@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">List of all cars in the fleet</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>
+                        Following cars are considered as replacement in company fleet.
+                    </p>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Manufacturer</th>
+                        <th>Engine type</th>
+                        <th>CO2 emissions</th>
+                        <th>Range</th>
+                        <th>Cost</th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <th>Name</th>
+                        <th>Manufacturer</th>
+                        <th>Engine type</th>
+                        <th>CO2 emissions</th>
+                        <th>Range</th>
+                        <th>Cost</th>
+                    </tfoot>
+                    <tbody>
+                    {% for car in object_list %}
+                        <tr>
+                            <td>{{ car.name }}</td>
+                            <td>{{ car.get_manufacturer_display }}</td>
+                            <td>{{ car.get_engine_type_display }}</td>
+                            <td>{% if car.engine_type != "ELECTRIC" %}{{ car.emissions_fuel_per_km }} g/Km{% endif %}</td>
+                            <td>{% if car.engine_type == "ELECTRIC" %}{{ car.range }} Km{% endif %}</td>
+                            <td>{{ car.cost_new|intcomma }} Kc</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
