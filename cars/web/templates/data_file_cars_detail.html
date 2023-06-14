@@ -6,6 +6,18 @@
             <h6 class="m-0 font-weight-bold text-primary">List of all cars in the fleet</h6>
         </div>
         <div class="card-body">
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>
+                        This list shows company feet with proposed replacement cars.
+                        <b>Proposed tCO2</b> is computed on assumption that same trips care made in history would be
+                        made with a replacement car.
+                        <b>Longest trip</b> is used to find suitable car which must be able to make this trip on a
+                        single charge.
+                        If no suitable electric car can be found, petrol car is used.
+                    </p>
+                </div>
+            </div>
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
@@ -41,11 +53,11 @@
                             <td style="background-color: #d5ff9e">{{ car.original_emissions_total_t|floatformat:2 }}</td>
                             <td style="background-color: #cfe1fa">
                                 {{ car.proposed_type.name }} {{ car.proposed_type.engine_type }}
-                                {% if car.proposed_type.engine_type ==  "ELECTRIC"%} ♻️ {% endif %}
-                                {% if car.proposed_type.engine_type ==  "DIESEL"%} 🔥 {% endif %}
-                                {% if car.proposed_type.engine_type ==  "GAS"%} 🕯️ {% endif %}
-                                {% if car.proposed_type.engine_type ==  "HYBRID"%} ☯️️ {% endif %}
-                                {% if not car.proposed_type%} Removed ❌ {% endif %}
+                                {% if car.proposed_type.engine_type ==  "ELECTRIC" %} ♻️ {% endif %}
+                                {% if car.proposed_type.engine_type ==  "DIESEL" %} 🔥 {% endif %}
+                                {% if car.proposed_type.engine_type ==  "GAS" %} 🕯️ {% endif %}
+                                {% if car.proposed_type.engine_type ==  "HYBRID" %} ☯️️ {% endif %}
+                                {% if not car.proposed_type %} Removed ❌ {% endif %}
                             </td>
                             <td style="background-color: #b3d2fc">{{ car.proposed_emissions_total_t|floatformat:2 }}</td>
                             <td>{{ car.distance_total.km |floatformat:0 }} km</td>

@@ -50,6 +50,11 @@
                 <!-- Card Body -->
                 <div class="card-body">
                     <div class="row">
+                        <div class="col-lg-8">
+                            <p>This is current company car fleet and its emissions based on historical data.</p>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-primary shadow h-100 py-2">
                                 <div class="card-body">
@@ -109,47 +114,27 @@
                             </div>
                         </div>
 
-{#                        <div class="col-xl-3 col-md-6 mb-4">#}
-{#                            <div class="card border-left-success shadow h-100 py-2">#}
-{#                                <div class="card-body">#}
-{#                                    <div class="row no-gutters align-items-center">#}
-{#                                        <div class="col mr-2">#}
-{#                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">#}
-{#                                                Average trip#}
-{#                                            </div>#}
-{#                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ all_current_cars_avg_distance |intcomma }}#}
-{#                                                km#}
-{#                                            </div>#}
-{#                                        </div>#}
-{#                                        <div class="col-auto">#}
-{#                                            <i class="fas fa-2x text-gray-300"></i>#}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
+                        {#                        <div class="col-xl-3 col-md-6 mb-4">#}
+                        {#                            <div class="card border-left-success shadow h-100 py-2">#}
+                        {#                                <div class="card-body">#}
+                        {#                                    <div class="row no-gutters align-items-center">#}
+                        {#                                        <div class="col mr-2">#}
+                        {#                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">#}
+                        {#                                                Average trip#}
+                        {#                                            </div>#}
+                        {#                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ all_current_cars_avg_distance |intcomma }}#}
+                        {#                                                km#}
+                        {#                                            </div>#}
+                        {#                                        </div>#}
+                        {#                                        <div class="col-auto">#}
+                        {#                                            <i class="fas fa-2x text-gray-300"></i>#}
+                        {#                                        </div>#}
+                        {#                                    </div>#}
+                        {#                                </div>#}
+                        {#                            </div>#}
+                        {#                        </div>#}
                     </div>
-{#                    <div class="row">#}
-{#                        <div class="col-xl-3 col-md-6 mb-4">#}
-{#                            <div class="card border-left-success shadow h-100 py-2">#}
-{#                                <div class="card-body">#}
-{#                                    <div class="row no-gutters align-items-center">#}
-{#                                        <div class="col mr-2">#}
-{#                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">#}
-{#                                                All trips#}
-{#                                            </div>#}
-{#                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ original_distances_sum |intcomma }}#}
-{#                                                km#}
-{#                                            </div>#}
-{#                                        </div>#}
-{#                                        <div class="col-auto">#}
-{#                                            <i class="fas fa-2x text-gray-300"></i>#}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                    </div>#}
+
                 </div>
             </div>
         </div>
@@ -179,6 +164,8 @@
             </div>
         </div>
     </div>
+
+
 
     <script>
         // Pie Chart Example
@@ -213,6 +200,15 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <p>
+                                This simulations shows which emissions would company car fleet emit if it would have different cars.
+                                All trips are same as in <b>Current fleet</b> above, just with different cars.
+                                <b>Number of cars</b> may be different because some cars may be removed from the fleet, which also removes all their trips.
+                            </p>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-primary shadow h-100 py-2">
@@ -273,46 +269,46 @@
                             </div>
                         </div>
 
-{#                        <div class="col-xl-3 col-md-6 mb-4">#}
-{#                            <div class="card border-left-success shadow h-100 py-2">#}
-{#                                <div class="card-body">#}
-{#                                    <div class="row no-gutters align-items-center">#}
-{#                                        <div class="col mr-2">#}
-{#                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">#}
-{#                                                Average trip#}
-{#                                            </div>#}
-{#                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ all_proposed_cars_avg_distance |intcomma }}#}
-{#                                                km#}
-{#                                            </div>#}
-{#                                        </div>#}
-{#                                        <div class="col-auto">#}
-{#                                            <i class="fas fa-2x text-gray-300"></i>#}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
+                        {#                        <div class="col-xl-3 col-md-6 mb-4">#}
+                        {#                            <div class="card border-left-success shadow h-100 py-2">#}
+                        {#                                <div class="card-body">#}
+                        {#                                    <div class="row no-gutters align-items-center">#}
+                        {#                                        <div class="col mr-2">#}
+                        {#                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">#}
+                        {#                                                Average trip#}
+                        {#                                            </div>#}
+                        {#                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ all_proposed_cars_avg_distance |intcomma }}#}
+                        {#                                                km#}
+                        {#                                            </div>#}
+                        {#                                        </div>#}
+                        {#                                        <div class="col-auto">#}
+                        {#                                            <i class="fas fa-2x text-gray-300"></i>#}
+                        {#                                        </div>#}
+                        {#                                    </div>#}
+                        {#                                </div>#}
+                        {#                            </div>#}
+                        {#                        </div>#}
                     </div>
                     <div class="row">
-{#                        <div class="col-xl-3 col-md-6 mb-4">#}
-{#                            <div class="card border-left-success shadow h-100 py-2">#}
-{#                                <div class="card-body">#}
-{#                                    <div class="row no-gutters align-items-center">#}
-{#                                        <div class="col mr-2">#}
-{#                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">#}
-{#                                                All trips#}
-{#                                            </div>#}
-{#                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ all_proposed_cars_sum_distance |intcomma }}#}
-{#                                                km#}
-{#                                            </div>#}
-{#                                        </div>#}
-{#                                        <div class="col-auto">#}
-{#                                            <i class="fas fa-2x text-gray-300"></i>#}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
+                        {#                        <div class="col-xl-3 col-md-6 mb-4">#}
+                        {#                            <div class="card border-left-success shadow h-100 py-2">#}
+                        {#                                <div class="card-body">#}
+                        {#                                    <div class="row no-gutters align-items-center">#}
+                        {#                                        <div class="col mr-2">#}
+                        {#                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">#}
+                        {#                                                All trips#}
+                        {#                                            </div>#}
+                        {#                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ all_proposed_cars_sum_distance |intcomma }}#}
+                        {#                                                km#}
+                        {#                                            </div>#}
+                        {#                                        </div>#}
+                        {#                                        <div class="col-auto">#}
+                        {#                                            <i class="fas fa-2x text-gray-300"></i>#}
+                        {#                                        </div>#}
+                        {#                                    </div>#}
+                        {#                                </div>#}
+                        {#                            </div>#}
+                        {#                        </div>#}
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-danger shadow h-100 py-2">
                                 <div class="card-body">
@@ -353,23 +349,23 @@
                         </div>
                     </div>
                     {#                    <div class="row">#}
-{#                                            <div class="col-xl-3 col-md-6 mb-4">#}
-{#                                                <div class="card border-left-primary shadow h-100 py-2">#}
-{#                                                    <div class="card-body">#}
-{#                                                        <div class="row no-gutters align-items-center">#}
-{#                                                            <div class="col mr-2">#}
-{#                                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">#}
-{#                                                                    Number of cars#}
-{#                                                                </div>#}
-{#                                                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ all_proposed_cars_num }}</div>#}
-{#                                                            </div>#}
-{#                                                            <div class="col-auto">#}
-{#                                                                <i class="fas fa-car fa-2x text-gray-300"></i>#}
-{#                                                            </div>#}
-{#                                                        </div>#}
-{#                                                    </div>#}
-{#                                                </div>#}
-{#                                            </div>#}
+                    {#                                            <div class="col-xl-3 col-md-6 mb-4">#}
+                    {#                                                <div class="card border-left-primary shadow h-100 py-2">#}
+                    {#                                                    <div class="card-body">#}
+                    {#                                                        <div class="row no-gutters align-items-center">#}
+                    {#                                                            <div class="col mr-2">#}
+                    {#                                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">#}
+                    {#                                                                    Number of cars#}
+                    {#                                                                </div>#}
+                    {#                                                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ all_proposed_cars_num }}</div>#}
+                    {#                                                            </div>#}
+                    {#                                                            <div class="col-auto">#}
+                    {#                                                                <i class="fas fa-car fa-2x text-gray-300"></i>#}
+                    {#                                                            </div>#}
+                    {#                                                        </div>#}
+                    {#                                                    </div>#}
+                    {#                                                </div>#}
+                    {#                                            </div>#}
                     {##}
                     {#                        <!-- Earnings (Monthly) Card Example -->#}
                     {#                        <div class="col-xl-3 col-md-6 mb-4">#}
